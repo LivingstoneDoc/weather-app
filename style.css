@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+  }
+  
+  body {
+    background-color: #E5E5E5;
+  }
+  
+  .container {
+    display: flex;
+    width: 1144px;
+    height: 100vh;
+    margin: 0 auto;
+  }
+  
+  #weather-widget {
+    display: flex;
+    flex-direction: column;
+    width: 620px;
+    min-height: 380px;
+    background-color: #FFFFFF;
+    margin: auto;
+    padding: 15px;
+  }
+  
+  .weather-form {
+    display: flex;
+    border: 1px solid #000000;
+    width: 100%;
+    padding: 0 15px;
+    height: 45px;
+  }
+  
+  .weather-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: #696969;
+    padding-right: 10px;
+  }
+  
+  .search-btn {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
+
+  .search-btn img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .locations-wrapper {
+    display: flex;
+    position: relative;
+    height: 315px;
+    border: 1px solid #000000;
+    border-top: none;
+  }
+
+  .locations-wrapper:before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    background-color: black;
+    left: 50%;
+  }
+  
+  .location-info {
+    width: 50%;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  .temperature {
+    display: block;
+    position: relative;
+    width: max-content;
+    padding: 20px 0 0 20px;
+    font-size: 70px;
+  }
+
+  .temperature:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 4px solid #000000;
+    border-radius: 100%;
+    top: 33px;
+    left: 100%;
+  }
+  
+  .temperature-icon {
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    margin-top: 30px;
+    border: none;
+  }
+
+  .temperature-icon img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .location-info-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 65px;
+    padding: 0 15px;
+  }
+  
+  .footer-name {
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .footer-btn {
+    display: block;
+    width: 23px;
+    height: 23px;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
+
+  .footer-btn img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .footer-btn img:active {
+    filter: invert(20%) sepia(243%) saturate(1576%) hue-rotate(-21deg) brightness(137%) contrast(73%);
+  }
+  
+  .location-favourite {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+  }
+  
+  .favourite-subheader {
+    width: 100%;
+    height: 70px;
+    border-bottom: 1px solid #000000;
+    padding: 20px 0 0 15px;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .favourite-list-wrapper {
+    overflow: auto;
+    padding: 35px 0 0 20px;
+  }
+  
+  .favourite-list {
+    list-style-type: none;
+  }
+
+  .favourite-item-wrapper {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .favourite-list li {
+    position: relative;
+    width: max-content;
+    font-size: 24px;
+    padding-bottom: 10px;
+  }
+
+  .delete-btn {
+    position: relative;
+    margin-top: 7px;
+    width: 15px;
+    height: 15px;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
+
+  .delete-btn:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: #000000;
+    transform: rotate(45deg);
+    left: 0;
+  }
+
+  .delete-btn:after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background-color: #000000;
+    transform: rotate(45deg);
+    top: 1px;
+  }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="container">
+    <section id="weather-widget">
+        <form class="weather-form">
+            <input type="text" placeholder="Type a location" class="weather-input" required>
+          <button class="search-btn"><img src="./assets/icons/search.svg" alt="search"></button>
+        </form>
+        <div class="locations-wrapper">
+          <div class="location-info">
+            <span class="temperature">14</span>
+            <img class="temperature-icon" src="./assets/icons/cloud.svg" alt="weather-icon"/>
+            <div class="location-info-footer">
+            <p class="footer-name">Saint Petersburg</p>
+            <button class="footer-btn"><img src="./assets/icons/favourite.svg" alt="fav"/></button>
+          </div>
+          </div>
+          <div class="location-favourite">
+            <div class="favourite-subheader">
+              Added Locations:
+            </div>
+            <div class="favourite-list-wrapper">
+            <ul class="favourite-list">
+              <li>Amur</li>
+              <li>Samara</li>
+              <li>Bali</li>
+              <li>Dane</li>
+              <li>Kilo</li>
+            </ul>
+            </div>
+          </div>
+        </div>
+    </section>
+  </div>
+  <script src="./main.js"></script>
+</body>
+</html>
