@@ -2,10 +2,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Roboto, sans-serif;
   }
+
+  @font-face {
+    font-family: 'Roboto';
+    font-weight: 400;
+    src: url('./fonts/Roboto-Regular.ttf');
+}
   
   body {
+    font-family: 'Roboto', sans-serif;
     background-color: #E5E5E5;
   }
   
