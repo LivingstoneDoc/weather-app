@@ -16,7 +16,10 @@
   }
   
   .container {
+    position: relative;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 1144px;
     height: 100vh;
     margin: 0 auto;
@@ -60,7 +63,7 @@
     cursor: pointer;
   }
 
-  .search-btn img {
+  .search-btn svg {
     width: 100%;
     height: 100%;
   }
@@ -86,6 +89,11 @@
     width: 50%;
     height: 100%;
     overflow: auto;
+    visibility: hidden;
+  }
+
+  .show-location-info {
+    visibility: visible;
   }
   
   .temperature {
@@ -116,7 +124,7 @@
     border: none;
   }
 
-  .temperature-icon img {
+  .temperature-icon svg {
     width: 100%;
     height: 100%;
   }
@@ -143,13 +151,14 @@
     cursor: pointer;
   }
 
-  .footer-btn img {
+  .footer-btn svg {
     width: 100%;
     height: 100%;
   }
 
-  .footer-btn img:active {
-    filter: invert(20%) sepia(243%) saturate(1576%) hue-rotate(-21deg) brightness(137%) contrast(73%);
+  .footer-btn svg:active {
+    fill: red;
+    stroke: red;
   }
   
   .location-favourite {
@@ -217,4 +226,22 @@
     background-color: #000000;
     transform: rotate(45deg);
     top: 1px;
+  }
+
+  #warning-widget {
+    position: absolute;
+    top: 67px;
+  }
+
+  .warning {
+    width: max-content;
+    height: max-content;
+    background-color:  #f12a2a;
+    padding: 10px;
+    color: #FFFFFF;
+    display: none;
+  }
+
+  .show-warning {
+    display: block;
   }

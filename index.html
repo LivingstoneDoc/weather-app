@@ -9,18 +9,52 @@
 </head>
 <body>
   <div class="container">
+    <section id="warning-widget">
+      <div class="warning">Some error occured. Please, try again later</div>
+    </section>
     <section id="weather-widget">
         <form class="weather-form">
-            <input type="text" placeholder="Type a location" class="weather-input" required>
-          <button class="search-btn"><img src="./assets/icons/search.svg" alt="search"></button>
+          <input type="text" placeholder="Type a location" class="weather-input" required>
+          <button class="search-btn">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path opacity="0.54" fill-rule="evenodd" clip-rule="evenodd" 
+                d="M19.3775 17.5H18.385L18.04 17.1575C19.2588 15.7363 20 13.8938 20 11.875C20 
+                7.38752 16.3625 3.75002 11.875 3.75002C7.3875 3.75002 3.75 7.38752 3.75 11.875C3.75 
+                16.3625 7.3875 20 11.875 20C13.8938 20 15.735 19.26 17.1563 18.0425L17.5013 
+                18.385V19.375L23.7488 25.6138L25.6125 23.75L19.3775 17.5ZM11.875 17.5C8.76751 
+                17.5 6.25001 14.9825 6.25001 11.875C6.25001 8.76877 8.76751 6.25002 11.875 
+                6.25002C14.9813 6.25002 17.5 8.76877 17.5 11.875C17.5 14.9825 14.9813 17.5 11.875 17.5Z" 
+                fill="black"
+              />
+            </svg>
+          </button>
         </form>
         <div class="locations-wrapper">
           <div class="location-info">
-            <span class="temperature">14</span>
-            <img class="temperature-icon" src="./assets/icons/cloud.svg" alt="weather-icon"/>
+            <span class="temperature"></span>
+            <svg class="temperature-icon" width="80" height="80" viewBox="0 0 78 59" 
+              fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <rect width="78" height="59" fill="url(#pattern0_1_20)"/>
+              <defs>
+              <pattern id="pattern0_1_20" patternContentUnits="objectBoundingBox" width="1" height="1">
+              <use xlink:href="#image0_1_20" transform="matrix(0.0104167 0 0 0.0137712 0 -0.161017)"/>
+              </pattern>
+              </defs>
+            </svg>
             <div class="location-info-footer">
-            <p class="footer-name">Saint Petersburg</p>
-            <button class="footer-btn"><img src="./assets/icons/favourite.svg" alt="fav"/></button>
+            <p class="footer-name"></p>
+            <button class="footer-btn">
+              <svg width="23" height="23" viewBox="0 0 26 25" fill="none" 
+                   stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg"
+              >
+                <path opacity="0.54" fill-rule="evenodd" clip-rule="evenodd" 
+                      d="M18.5154 1C15.9205 1 13.5851 2.7875 12.6769 5.125C11.7687 2.7875 9.43333 1 
+                      6.83846 1C3.59487 1 1 3.6125 1 7.1875C1 12 5.54103 16.125 12.6769 23C19.8128 
+                      16.125 24.3538 12 24.3538 7.1875C24.3538 3.6125 21.759 1 18.5154 1Z"    
+                />
+              </svg>
+            </button>
           </div>
           </div>
           <div class="location-favourite">
@@ -28,13 +62,7 @@
               Added Locations:
             </div>
             <div class="favourite-list-wrapper">
-            <ul class="favourite-list">
-              <li>Amur</li>
-              <li>Samara</li>
-              <li>Bali</li>
-              <li>Dane</li>
-              <li>Kilo</li>
-            </ul>
+            <ul class="favourite-list"></ul>
             </div>
           </div>
         </div>
