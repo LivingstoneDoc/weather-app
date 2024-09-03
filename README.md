@@ -1,4 +1,6 @@
 # weather-app
+https://livingstonedoc.github.io/weather-app/
+
 Weather app allows:
 - search location and show weather;
 - add location to favourite list;
