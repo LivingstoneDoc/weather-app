@@ -1,61 +1,98 @@
-const UI_ELEMENTS = {
-    weatherForm: document.querySelector('.weather-form'),
-    weatherInput: document.querySelector('.weather-input'),
-    locationInfo: document.querySelector('.location-info'),
-    footerName: document.querySelector('.footer-name'),
-    temperatureValue: document.querySelector('.temperature'),
-    temperatureIcon: document.querySelector('.temperature-icon'),
-    warningMessage: document.querySelector('.warning'),
-    loadingMessage: document.querySelector('.loading-message'),
+import { getWeatherRequest } from "./data-request.js";
+import { UI_ELEMENTS } from "./constants.js";
+
+const favouriteArr = [];
+
+function isLocationNameInFavouriteList(locationName) {
+    const foundLocation = favouriteArr.find(item => {
+        if (item === locationName) {
+            UI_ELEMENTS().warningMessage.textContent = `Location "${locationName}" has already been added to Favourite List`;
+            return foundLocation;
+        }    
+    });
 }
 
-function getWeatherRequest(locationName) {
-    const serverUrl = 'https://api.openweathermap.org/data/2.5/weather?';
-    const apiKey = 'e5874bb9450e5b527cfe8a7798a9f4af';
-    const url = `${serverUrl}q=${locationName}&appid=${apiKey}`;
-    
-    return fetch(url)
-        .then(response => {
-            if (response.status === 400) {
-                UI_ELEMENTS.warningMessage.textContent = 'Bad requiest';
-            }
-            if (response.status === 401) {
-                UI_ELEMENTS.warningMessage.textContent = `Something wrong with authorization. 
-                                Please, check your api key or try to turn on your VPN, 
-                                reload this page and type a location again`;
-            }
-            if (response.status === 404) {
-                UI_ELEMENTS.warningMessage.textContent = 'Location is not found. Please, check a location name';
-            }
-            if (response.status === 500) {
-                UI_ELEMENTS.warningMessage.textContent = 'Server error. Please, try later';
-            }
-            return response.json();
-        })  
+function addToFavouriteList() {
+    try {
+        isLocationNameInFavouriteList(UI_ELEMENTS().footerName.textContent);
+        favouriteArr.push(UI_ELEMENTS().footerName.textContent);
+        //console.log(favouriteArr);
+        return favouriteArr;
+    } catch {
+        UI_ELEMENTS().warningMessage.classList.add('show-warning');
+        UI_ELEMENTS().warningMessage.textContent;
+    }
 }
+
+function deleteFromFavouriteList(locationName) {
+    favouriteArr.find((item, i, arr) => {
+        if (item === locationName) {
+            arr.splice(i, 1);
+        }
+    });
+    //console.log(favouriteArr);
+    return favouriteArr;
+}
+
+function renderFavouriteList() {
+    UI_ELEMENTS().favouriteList.innerHTML = '';
+    favouriteArr.forEach(listItem => {
+            const favouriteItemWrapper = document.createElement('div');
+            favouriteItemWrapper.classList.add('favourite-item-wrapper');
+            const favouriteItem = document.createElement('li');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-btn');
+            favouriteItem.textContent = listItem;
+            favouriteItem.style.cursor = 'pointer';
+            favouriteItemWrapper.append(favouriteItem);
+            favouriteItemWrapper.append(deleteBtn);
+            UI_ELEMENTS().favouriteList.append(favouriteItemWrapper);
+
+        function handleDeleteBtn(e) {
+            e.preventDefault();
+            deleteFromFavouriteList(listItem);
+            renderFavouriteList();
+        }
+        deleteBtn.addEventListener('click', handleDeleteBtn);
+
+        function handleLocationItem(e) {
+            e.preventDefault();
+            renderLocationForecast(e, listItem);
+        }
+        favouriteItem.addEventListener('click', handleLocationItem);
+        return UI_ELEMENTS().favouriteList;
+    })
+}
+
+function handleFavouriteBtn(e) {
+        e.preventDefault();
+        addToFavouriteList();
+        renderFavouriteList();
+}
+UI_ELEMENTS().favouriteBtn.addEventListener('click', handleFavouriteBtn);
 
 function kelvinToCelcius(kelvinTemp) {
     const celciusTemp = Math.trunc(kelvinTemp - 273.15);
     return celciusTemp;
 }
 
-function renderLocationForecast(e, locationName = UI_ELEMENTS.weatherInput.value) {
+function renderLocationForecast(e, locationName = UI_ELEMENTS().weatherInput.value) {
     e.preventDefault();
     getWeatherRequest(locationName)
         .then(data => {
-            UI_ELEMENTS.locationInfo.classList.add('show-location-info');
-            UI_ELEMENTS.temperatureIcon.style.background = `url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png) center center`;
+            UI_ELEMENTS().locationInfo.classList.add('show-location-info');
+            UI_ELEMENTS().temperatureIcon.style.background = `url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png) center center`;
             const celciusTemp = kelvinToCelcius(data.main.temp);
-            UI_ELEMENTS.temperatureValue.textContent = celciusTemp;
-            UI_ELEMENTS.footerName.textContent = data.name;
-            UI_ELEMENTS.warningMessage.classList.remove('show-warning');
+            UI_ELEMENTS().temperatureValue.textContent = celciusTemp;
+            UI_ELEMENTS().footerName.textContent = data.name;
+            UI_ELEMENTS().warningMessage.classList.remove('show-warning');
         })
         .catch(error => {
-            UI_ELEMENTS.warningMessage.classList.add('show-warning');
-            UI_ELEMENTS.warningMessage.textContent;
-            UI_ELEMENTS.locationInfo.classList.remove('show-location-info');
+            UI_ELEMENTS().warningMessage.classList.add('show-warning');
+            UI_ELEMENTS().warningMessage.textContent;
+            UI_ELEMENTS().locationInfo.classList.remove('show-location-info');
             console.error(error);
         })
-        .finally(() => UI_ELEMENTS.weatherForm.reset())
+        .finally(() => UI_ELEMENTS().weatherForm.reset())
 }
-UI_ELEMENTS.weatherForm.addEventListener('submit', renderLocationForecast);
+UI_ELEMENTS().weatherForm.addEventListener('submit', renderLocationForecast);
