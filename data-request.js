@@ -1,9 +1,10 @@
 import { UI_ELEMENTS } from "./constants.js";
 
-export function getWeatherRequest(locationName) {
-    const serverUrl = 'https://api.openweathermap.org/data/2.5/weather?';
+export function getWeatherRequest(locationName, serverRequest) {
+    // const serverUrl = 'https://api.openweathermap.org/data/2.5/weather?';
+    const serverUrl = 'https://api.openweathermap.org/data/2.5/';
     const apiKey = 'e5874bb9450e5b527cfe8a7798a9f4af';
-    const url = `${serverUrl}q=${locationName}&appid=${apiKey}`;
+    const url = `${serverUrl}${serverRequest}?q=${locationName}&cnt=3&appid=${apiKey}`;
     
     return fetch(url)
         .then(response => {

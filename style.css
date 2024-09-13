@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     width: 620px;
-    min-height: 380px;
+    min-height: 400px;
     background-color: #FFFFFF;
     margin: auto;
     padding: 15px;
@@ -71,7 +71,7 @@
   .locations-wrapper {
     display: flex;
     position: relative;
-    height: 315px;
+    height: 100%;
     border: 1px solid #000000;
     border-top: none;
   }
@@ -89,60 +89,26 @@
     width: 50%;
     height: 100%;
     overflow: auto;
+    padding: 25px 15px 10px;
     visibility: hidden;
   }
 
   .show-location-info {
     visibility: visible;
   }
-  
-  .temperature {
-    display: block;
-    position: relative;
-    width: max-content;
-    padding: 20px 0 0 20px;
-    font-size: 70px;
-  }
 
-  .temperature:before {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border: 4px solid #000000;
-    border-radius: 100%;
-    top: 33px;
-    left: 100%;
-  }
-  
-  .temperature-icon {
-    display: block;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-    margin-top: 30px;
-    border: none;
-  }
-
-  .temperature-icon svg {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .location-info-footer {
+  .location-info-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 65px;
-    padding: 0 15px;
   }
   
-  .footer-name {
-    font-size: 24px;
+  .header-name {
+    font-size: 28px;
     color: #000000;
   }
   
-  .footer-btn {
+  .header-btn {
     display: block;
     width: 23px;
     height: 23px;
@@ -151,14 +117,96 @@
     cursor: pointer;
   }
 
-  .footer-btn svg {
+  .header-btn svg {
     width: 100%;
     height: 100%;
   }
 
-  .footer-btn svg:active {
+  .header-btn svg:active {
     fill: red;
     stroke: red;
+  }
+
+  .temp-degrees-and-icon {
+    display: flex;
+
+  }
+  
+  .temperature {
+    display: block;
+    position: relative;
+    width: max-content;
+    margin-top: 15px;
+    font-size: 70px;
+  }
+  
+  .temperature-icon, .forecast-icon {
+    display: block;
+    width: 80px;
+    height: 60px;
+    margin-top: 20px;
+    border: none;
+  }
+
+  .temperature-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .location-info-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 15px;
+  }
+
+  .details-item {
+    font-size: 21px;
+  }
+
+  .location-forecast {
+    position: relative;
+    margin-top: 25px;
+    font-size: 18px;
+  }
+
+  .forecast-time {
+    padding-left: 12px;
+  }
+
+  .location-forecast-item {
+    margin-top: 15px;
+  }
+
+  .location-forecast-item:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: #000000;
+    margin-top: 5px;
+  }
+
+  .location-forecast-item:last-child:after {
+    display: none;
+  }
+
+  .forecast-temperature-and-icon {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 12px;
+  }
+
+  .forecast-icon {
+    margin: 0;
+    width: 50px;
+    height: 50px;
+  }
+
+  .forecast-icon svg {
+    width: 100%;
+    height: 100%;
   }
   
   .location-favourite {
@@ -228,7 +276,7 @@
 
   #warning-widget {
     position: absolute;
-    top: 67px;
+    top: 5px;
   }
 
   .warning {
