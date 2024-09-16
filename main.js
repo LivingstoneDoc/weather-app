@@ -1,7 +1,30 @@
 import { getWeatherRequest } from "./data-request.js";
 import { UI_ELEMENTS } from "./constants.js";
+import {  saveCurrentLocation, loadCurrentLocation, saveFavouriteList, loadFavouriteList } from './storage.js';
 
 let favouriteArr = [];
+
+function showSavedLocation() {
+    let savedLocation = loadCurrentLocation();
+    if (savedLocation) {
+        renderLocationForecast(savedLocation);
+    } 
+loadCurrentLocation();
+}
+showSavedLocation();
+
+function showSavedFavouriteList() {
+    let savedFavouriteArr = loadFavouriteList();
+    if (savedFavouriteArr) {
+        for (let i = 0; i < savedFavouriteArr.length; i++) {
+            favouriteArr.push(savedFavouriteArr[i]);
+        }
+        // console.log('favouriteArr', favouriteArr);
+        renderFavouriteList();
+    }
+loadFavouriteList();
+}
+showSavedFavouriteList();
 
 function isLocationNameInFavouriteList(locationName) {
     const foundLocation = favouriteArr.find(item => {
@@ -16,7 +39,8 @@ function addToFavouriteList() {
     try {
         isLocationNameInFavouriteList(UI_ELEMENTS().headerName.textContent);
         favouriteArr.push(UI_ELEMENTS().headerName.textContent);
-        // console.log(favouriteArr);
+        // console.log('favouriteArr', favouriteArr);
+        saveFavouriteList(favouriteArr);
         return favouriteArr;
     } catch {
         UI_ELEMENTS().warningMessage.classList.add('show-warning');
@@ -29,8 +53,9 @@ function deleteFromFavouriteList(locationName) {
         if (item === locationName) {
             arr.splice(i, 1);
         }
+        saveFavouriteList(favouriteArr);
     });
-    // console.log(favouriteArr);
+    // console.log('favouriteArr', favouriteArr);
     return favouriteArr;
 }
 
@@ -57,7 +82,8 @@ function renderFavouriteList() {
 
         function handleLocationItem(e) {
             e.preventDefault();
-            renderLocationForecast(e, listItem);
+            saveCurrentLocation(listItem);
+            renderLocationForecast(listItem);
         }
         favouriteItem.addEventListener('click', handleLocationItem);
         return UI_ELEMENTS().favouriteList;
@@ -86,8 +112,8 @@ function getTime(timestamp) {
     return time;
 }
 
-function renderLocationForecast(e, locationName = UI_ELEMENTS().weatherInput.value) {
-    e.preventDefault();
+function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value) {
+    saveCurrentLocation(locationName);
     getWeatherRequest(locationName, 'weather')
     // serverRequest = 'weather'
         .then(data => {
@@ -126,8 +152,8 @@ function renderLocationForecast(e, locationName = UI_ELEMENTS().weatherInput.val
             UI_ELEMENTS().locationInfoDetails.append(sunriseTime);
             UI_ELEMENTS().locationInfoDetails.append(sunsetTime);
             UI_ELEMENTS().warningMessage.classList.remove('show-warning');
-            console.log(data.timezone)
-            console.log(data);
+            // console.log(data.timezone)
+            // console.log(data);
         })
         getWeatherRequest(locationName, 'forecast')
         // serverRequest = 'forecast'
@@ -188,4 +214,7 @@ function renderLocationForecast(e, locationName = UI_ELEMENTS().weatherInput.val
         })
         .finally(() => UI_ELEMENTS().weatherForm.reset())    
 }
-UI_ELEMENTS().weatherForm.addEventListener('submit', renderLocationForecast);
+UI_ELEMENTS().weatherForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    renderLocationForecast(UI_ELEMENTS().weatherInput.value);
+});
