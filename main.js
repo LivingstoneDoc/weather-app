@@ -113,12 +113,10 @@ function getTime(timestamp) {
 }
 
 function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value) {
-    saveCurrentLocation(locationName);
     getWeatherRequest(locationName, 'weather')
     // serverRequest = 'weather'
         .then(data => {
             UI_ELEMENTS().locationInfoDetails.innerHTML = '';
-            UI_ELEMENTS().locationInfo.classList.add('show-location-info');
             UI_ELEMENTS().temperatureIcon.style.background = `url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png) center center`;
             const celciusTemp = kelvinToCelcius(data.main.temp);
             UI_ELEMENTS().temperatureValue.textContent = celciusTemp;
@@ -152,6 +150,8 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
             UI_ELEMENTS().locationInfoDetails.append(sunriseTime);
             UI_ELEMENTS().locationInfoDetails.append(sunsetTime);
             UI_ELEMENTS().warningMessage.classList.remove('show-warning');
+            UI_ELEMENTS().locationInfo.classList.add('show-location-info');
+            saveCurrentLocation(locationName);
             // console.log(data.timezone)
             // console.log(data);
         })
@@ -204,6 +204,8 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
                 forecastItem.append(forecastTime);
                 forecastItem.append(tempAndIcon);
                 UI_ELEMENTS().locationForecast.append(forecastItem);
+                UI_ELEMENTS().locationInfo.classList.add('show-location-info');
+                saveCurrentLocation(locationName);
             })
             })
         .catch(error => {
