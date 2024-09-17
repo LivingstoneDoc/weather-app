@@ -97,11 +97,6 @@ function handleFavouriteBtn(e) {
 }
 UI_ELEMENTS().favouriteBtn.addEventListener('click', handleFavouriteBtn);
 
-function kelvinToCelcius(kelvinTemp) {
-    const celciusTemp = Math.trunc(kelvinTemp - 273.15);
-    return celciusTemp;
-}
-
 function getTime(timestamp) {
     const milliseconds = new Date(timestamp * 1000);
     let options = {
@@ -118,8 +113,7 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
         .then(data => {
             UI_ELEMENTS().locationInfoDetails.innerHTML = '';
             UI_ELEMENTS().temperatureIcon.style.background = `url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png) center center`;
-            const celciusTemp = kelvinToCelcius(data.main.temp);
-            UI_ELEMENTS().temperatureValue.textContent = celciusTemp;
+            UI_ELEMENTS().temperatureValue.textContent = Math.trunc(data.main.temp);
             UI_ELEMENTS().headerName.textContent = data.name;
 
             const temperatureFeelsLike = document.createElement('div');
@@ -127,7 +121,7 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
             temperatureFeelsLike.textContent = 'Feels like: ';
 
             const feelsLikeTempValue = document.createElement('span');
-            feelsLikeTempValue.textContent = kelvinToCelcius(data.main.feels_like);
+            feelsLikeTempValue.textContent = Math.trunc(data.main.feels_like);
             temperatureFeelsLike.append(feelsLikeTempValue);
 
             const sunriseTime = document.createElement('div');
@@ -178,7 +172,7 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
                 forecastTemperature.textContent = 'Temperature: ';
 
                 const forecastTemperatureValue = document.createElement('span');
-                forecastTemperatureValue.textContent = kelvinToCelcius(data.list[i].main.temp);
+                forecastTemperatureValue.textContent = Math.trunc(data.list[i].main.temp);
                 forecastTemperature.append(forecastTemperatureValue);
 
                 const forecastFeelsLike = document.createElement('div');
@@ -186,7 +180,7 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
                 forecastFeelsLike.textContent = 'Feels like: '
 
                 const forecastFeelsLikeValue = document.createElement('span');
-                forecastFeelsLikeValue.textContent = kelvinToCelcius(data.list[i].main.feels_like);
+                forecastFeelsLikeValue.textContent = Math.trunc(data.list[i].main.feels_like);
 
                 forecastFeelsLike.append(forecastFeelsLikeValue);
                 temperatureWrapper.append(forecastTemperature);

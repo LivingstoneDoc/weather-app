@@ -4,7 +4,9 @@ export function getWeatherRequest(locationName, serverRequest) {
     // const serverUrl = 'https://api.openweathermap.org/data/2.5/weather?';
     const serverUrl = 'https://api.openweathermap.org/data/2.5/';
     const apiKey = 'e5874bb9450e5b527cfe8a7798a9f4af';
-    const url = `${serverUrl}${serverRequest}?q=${locationName}&cnt=3&appid=${apiKey}`;
+    const timestampsLimit = 3;
+    const unitsMeasurement = 'metric';
+    const url = `${serverUrl}${serverRequest}?q=${locationName}&cnt=${timestampsLimit}&appid=${apiKey}&units=${unitsMeasurement}`;
     
     return fetch(url)
         .then(response => {
