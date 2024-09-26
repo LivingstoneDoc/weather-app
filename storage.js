@@ -7,10 +7,10 @@ export function loadCurrentLocation() {
 }
 
 export function saveFavouriteList(favouriteList) {
-    return localStorage.setItem('savedFavouriteList', JSON.stringify(favouriteList));
+    return localStorage.setItem('savedFavouriteList', JSON.stringify([...favouriteList]));
 }
 
 export function loadFavouriteList() {
     return JSON.parse(localStorage.getItem('savedFavouriteList'));
 }
-loadFavouriteList();
+// loadFavouriteList();

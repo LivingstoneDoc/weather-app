@@ -2,7 +2,7 @@ import { getWeatherRequest } from "./data-request.js";
 import { UI_ELEMENTS } from "./constants.js";
 import {  saveCurrentLocation, loadCurrentLocation, saveFavouriteList, loadFavouriteList } from './storage.js';
 
-let favouriteArr = [];
+let favouriteSet = new Set();
 
 function showSavedLocation() {
     let savedLocation = loadCurrentLocation();
@@ -17,9 +17,9 @@ function showSavedFavouriteList() {
     let savedFavouriteArr = loadFavouriteList();
     if (savedFavouriteArr) {
         for (let i = 0; i < savedFavouriteArr.length; i++) {
-            favouriteArr.push(savedFavouriteArr[i]);
+            favouriteSet.add(savedFavouriteArr[i]);
         }
-        // console.log('favouriteArr', favouriteArr);
+        // console.log('favouriteSetSaved', favouriteSet);
         renderFavouriteList();
     }
 loadFavouriteList();
@@ -27,41 +27,43 @@ loadFavouriteList();
 showSavedFavouriteList();
 
 function isLocationNameInFavouriteList(locationName) {
-    const foundLocation = favouriteArr.find(item => {
-        if (item === locationName) {
+        if (favouriteSet.has(locationName)) {
             UI_ELEMENTS().warningMessage.textContent = `Location "${locationName}" has already been added to Favourite List`;
-            return foundLocation;
-        }    
-    });
+            throw new Error(UI_ELEMENTS().warningMessage.textContent);
+        }
+        return favouriteSet.has(locationName);
 }
 
 function addToFavouriteList() {
     try {
         isLocationNameInFavouriteList(UI_ELEMENTS().headerName.textContent);
-        favouriteArr.push(UI_ELEMENTS().headerName.textContent);
-        // console.log('favouriteArr', favouriteArr);
-        saveFavouriteList(favouriteArr);
-        return favouriteArr;
+        favouriteSet.add(UI_ELEMENTS().headerName.textContent);
+        // console.log('favouriteSet', favouriteSet);
+        saveFavouriteList(favouriteSet);
+        // console.log('favouriteSet', favouriteSet);
+        return favouriteSet;
     } catch {
         UI_ELEMENTS().warningMessage.classList.add('show-warning');
         UI_ELEMENTS().warningMessage.textContent;
+        // console.log('Location has been added');
     }
 }
 
 function deleteFromFavouriteList(locationName) {
-    favouriteArr.find((item, i, arr) => {
-        if (item === locationName) {
-            arr.splice(i, 1);
+    favouriteSet.forEach(value => {
+        if (value === locationName) {
+            favouriteSet.delete(value);
         }
-        saveFavouriteList(favouriteArr);
-    });
+        saveFavouriteList(favouriteSet);
+    })
     // console.log('favouriteArr', favouriteArr);
-    return favouriteArr;
+    // console.log('favouriteSet', favouriteSet);
+    return favouriteSet;
 }
 
 function renderFavouriteList() {
     UI_ELEMENTS().favouriteList.innerHTML = '';
-    favouriteArr.forEach(listItem => {
+    favouriteSet.forEach(listItem => {
             const favouriteItemWrapper = document.createElement('div');
             favouriteItemWrapper.classList.add('favourite-item-wrapper');
             const favouriteItem = document.createElement('li');
