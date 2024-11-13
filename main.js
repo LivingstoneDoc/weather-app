@@ -109,59 +109,56 @@ function getTime(timestamp) {
     return time;
 }
 
-function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value) {
-    getWeatherRequest(locationName, 'weather')
-    // serverRequest = 'weather'
-        .then(data => {
-            UI_ELEMENTS().locationInfoDetails.innerHTML = '';
-            UI_ELEMENTS().temperatureIcon.style.background = `url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png) center center`;
-            UI_ELEMENTS().temperatureValue.textContent = Math.trunc(data.main.temp);
-            UI_ELEMENTS().headerName.textContent = data.name;
+async function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value) {
+    try {
+        let locationWeatherData = await (getWeatherRequest(locationName, 'weather'));
 
-            const temperatureFeelsLike = document.createElement('div');
-            temperatureFeelsLike.classList.add('details-item', 'feels-like');
-            temperatureFeelsLike.textContent = 'Feels like: ';
+        UI_ELEMENTS().locationInfoDetails.innerHTML = '';
+        UI_ELEMENTS().temperatureIcon.style.background = `url(https://openweathermap.org/img/wn/${locationWeatherData.weather[0].icon}@2x.png) center center`;
+        UI_ELEMENTS().temperatureValue.textContent = Math.trunc(locationWeatherData.main.temp);
+        UI_ELEMENTS().headerName.textContent = locationWeatherData.name;
+    
+        const temperatureFeelsLike = document.createElement('div');
+        temperatureFeelsLike.classList.add('details-item', 'feels-like');
+        temperatureFeelsLike.textContent = 'Feels like: ';
+    
+        const feelsLikeTempValue = document.createElement('span');
+        feelsLikeTempValue.textContent = Math.trunc(locationWeatherData.main.feels_like);
+        temperatureFeelsLike.append(feelsLikeTempValue);
+    
+        const sunriseTime = document.createElement('div');
+        sunriseTime.classList.add('details-item', 'sunrise');
+        sunriseTime.textContent = 'Sunrise: ';
+    
+        const sunriseTimeValue = document.createElement('span');
+        sunriseTimeValue.textContent = getTime(locationWeatherData.sys.sunrise)
+        sunriseTime.append(sunriseTimeValue);
+    
+        const sunsetTime = document.createElement('div');
+        sunsetTime.classList.add('details-item', 'sunset');
+        sunsetTime.textContent = 'Sunset: ';
+    
+        const sunsetTimeValue = document.createElement('span');
+        sunsetTimeValue.textContent = getTime(locationWeatherData.sys.sunset);
+        sunsetTime.append(sunsetTimeValue);
+    
+        UI_ELEMENTS().locationInfoDetails.append(temperatureFeelsLike);
+        UI_ELEMENTS().locationInfoDetails.append(sunriseTime);
+        UI_ELEMENTS().locationInfoDetails.append(sunsetTime);
+        UI_ELEMENTS().warningMessage.classList.remove('show-warning');
+        UI_ELEMENTS().locationInfo.classList.add('show-location-info');
+        saveCurrentLocation(locationName);
 
-            const feelsLikeTempValue = document.createElement('span');
-            feelsLikeTempValue.textContent = Math.trunc(data.main.feels_like);
-            temperatureFeelsLike.append(feelsLikeTempValue);
+        let locationForecastData = await (getWeatherRequest(locationName, 'forecast'));
 
-            const sunriseTime = document.createElement('div');
-            sunriseTime.classList.add('details-item', 'sunrise');
-            sunriseTime.textContent = 'Sunrise: ';
-
-            const sunriseTimeValue = document.createElement('span');
-            sunriseTimeValue.textContent = getTime(data.sys.sunrise)
-            sunriseTime.append(sunriseTimeValue);
-
-            const sunsetTime = document.createElement('div');
-            sunsetTime.classList.add('details-item', 'sunset');
-            sunsetTime.textContent = 'Sunset: ';
-
-            const sunsetTimeValue = document.createElement('span');
-            sunsetTimeValue.textContent = getTime(data.sys.sunset);
-            sunsetTime.append(sunsetTimeValue);
-
-            UI_ELEMENTS().locationInfoDetails.append(temperatureFeelsLike);
-            UI_ELEMENTS().locationInfoDetails.append(sunriseTime);
-            UI_ELEMENTS().locationInfoDetails.append(sunsetTime);
-            UI_ELEMENTS().warningMessage.classList.remove('show-warning');
-            UI_ELEMENTS().locationInfo.classList.add('show-location-info');
-            saveCurrentLocation(locationName);
-            // console.log(data.timezone)
-            // console.log(data);
-        })
-        getWeatherRequest(locationName, 'forecast')
-        // serverRequest = 'forecast'
-        .then(data => {
-            UI_ELEMENTS().locationForecast.innerText = '';
-            data.list.forEach((item, i) => {
+        UI_ELEMENTS().locationForecast.innerText = '';
+        locationForecastData.list.forEach((item, i) => {
                 const forecastItem = document.createElement('div');
                 forecastItem.classList.add('location-forecast-item');
 
                 const forecastTime = document.createElement('div');
                 forecastTime.classList.add('forecast-time');
-                forecastTime.textContent = getTime(data.list[i].dt);
+                forecastTime.textContent = getTime(locationForecastData.list[i].dt);
 
                 const tempAndIcon = document.createElement('div');
                 tempAndIcon.classList.add('forecast-temperature-and-icon');
@@ -174,7 +171,7 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
                 forecastTemperature.textContent = 'Temperature: ';
 
                 const forecastTemperatureValue = document.createElement('span');
-                forecastTemperatureValue.textContent = Math.trunc(data.list[i].main.temp);
+                forecastTemperatureValue.textContent = Math.trunc(locationForecastData.list[i].main.temp);
                 forecastTemperature.append(forecastTemperatureValue);
 
                 const forecastFeelsLike = document.createElement('div');
@@ -182,7 +179,7 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
                 forecastFeelsLike.textContent = 'Feels like: '
 
                 const forecastFeelsLikeValue = document.createElement('span');
-                forecastFeelsLikeValue.textContent = Math.trunc(data.list[i].main.feels_like);
+                forecastFeelsLikeValue.textContent = Math.trunc(locationForecastData.list[i].main.feels_like);
 
                 forecastFeelsLike.append(forecastFeelsLikeValue);
                 temperatureWrapper.append(forecastTemperature);
@@ -193,7 +190,7 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
                 forecastIcon.classList.add('forecast-icon');
                 forecastIcon.setAttribute('width', '50px');
                 forecastIcon.setAttribute('height', '50px');
-                forecastIcon.style.background = `url(https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}.png) center center`;
+                forecastIcon.style.background = `url(https://openweathermap.org/img/wn/${locationForecastData.list[i].weather[0].icon}.png) center center`;
                 
                 tempAndIcon.append(temperatureWrapper);
                 tempAndIcon.append(forecastIcon);
@@ -203,14 +200,14 @@ function renderLocationForecast(locationName = UI_ELEMENTS().weatherInput.value)
                 UI_ELEMENTS().locationInfo.classList.add('show-location-info');
                 saveCurrentLocation(locationName);
             })
-            })
-        .catch(error => {
-            UI_ELEMENTS().warningMessage.classList.add('show-warning');
-            UI_ELEMENTS().warningMessage.textContent;
-            UI_ELEMENTS().locationInfo.classList.remove('show-location-info');
-            console.error(error);
-        })
-        .finally(() => UI_ELEMENTS().weatherForm.reset())    
+    } catch(error) {
+        UI_ELEMENTS().warningMessage.classList.add('show-warning');
+        UI_ELEMENTS().warningMessage.textContent;
+        UI_ELEMENTS().locationInfo.classList.remove('show-location-info');
+        console.error(error);
+    } finally {
+        UI_ELEMENTS().weatherForm.reset();
+    }
 }
 UI_ELEMENTS().weatherForm.addEventListener('submit', function(e) {
     e.preventDefault();
